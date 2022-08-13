@@ -326,10 +326,12 @@ def imprimeArchivo():
 def descargaImagenes(lista_doujin):
     indice = 0
 
-    while indice < no_pag:
-        comando = 'wget https://cdn.nhentai.xxx/g/' + format(gallery_id[4]) + "/" + format(indice + 1) + '.jpg'
-        os.system(comando)
-        indice += 1
+    lista_aux = sorted(lista_doujin,key=itemgetter(2))
+    for x in range(0,1):
+        while indice < lista_aux[x][2]:
+            comando = 'wget https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice + 1) + '.jpg'
+            os.system(comando)
+            indice += 1
         
 def compruebaImagenes():
     global no_pag
@@ -368,14 +370,12 @@ def principal():
         list_aux = list()
         obtenerAtributos()
         imprimeArchivo()
-            
-        info = ""
         list_aux.append(doujinshi_id[1:])
         list_aux.append(gallery_id[4])
         list_aux.append(no_pag)
         list_descargas.append(list_aux)
-        #descargaImagenes(list_descargas)
-        print(sorted(list_descargas,key=itemgetter(2)))
+        info = ""
+   
+    descargaImagenes(list_descargas)
     fichero.close()
-        
 principal()
