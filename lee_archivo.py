@@ -324,15 +324,19 @@ def imprimeArchivo():
         os.chdir('../../')
         
 def descargaImagenes(lista_doujin):
-    indice = 0
-
     lista_aux = sorted(lista_doujin,key=itemgetter(2))
-    for x in range(0,1):
+    for x in range(0,3):
+        os.chdir('nhentai_xxx/')
+        os.chdir(lista_aux[x][0])
+        
+        indice = 0
+        print("Descargando imagenes para el ID #" + format(lista_aux[x][0]) + " 1/" + format(lista_aux[x][2]))
         while indice < lista_aux[x][2]:
             comando = 'wget https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice + 1) + '.jpg'
             os.system(comando)
             indice += 1
-        
+        os.chdir('../../')
+
 def compruebaImagenes():
     global no_pag
     global gallery_id
@@ -375,7 +379,9 @@ def principal():
         list_aux.append(no_pag)
         list_descargas.append(list_aux)
         info = ""
-   
+        
+    print("\n Descargando imagenes...")
     descargaImagenes(list_descargas)
     fichero.close()
+    
 principal()
