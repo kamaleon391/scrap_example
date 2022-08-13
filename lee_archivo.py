@@ -375,7 +375,7 @@ def principal():
         list_aux.append(no_pag)
         list_descargas.append(list_aux)
         #descargaImagenes(list_descargas)
-        #print(sorted(list_descargas,key=itemgetter(2)))
+        print(sorted(list_descargas,key=itemgetter(2)))
     fichero.close()
         
 principal()
