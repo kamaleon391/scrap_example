@@ -1,7 +1,7 @@
 # Scrapper
 A simple scrap of website
 
-## Requerimetns
+## Requeriments
 - pip install beautifulsoup4
 - pip install time
 - pip install tqdm
