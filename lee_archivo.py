@@ -2,6 +2,7 @@ import os, sys, glob
 from bs4 import BeautifulSoup
 from operator import itemgetter
 import requests, re
+import time
 
 info = ""
 #Constantes
@@ -325,15 +326,24 @@ def imprimeArchivo():
         
 def descargaImagenes(lista_doujin):
     lista_aux = sorted(lista_doujin,key=itemgetter(2))
-    for x in range(0,3):
+    for x in range(0,1):
         os.chdir('nhentai_xxx/')
         os.chdir(lista_aux[x][0])
         
-        indice = 0
-        print("Descargando imagenes para el ID #" + format(lista_aux[x][0]) + " 1/" + format(lista_aux[x][2]))
-        while indice < lista_aux[x][2]:
-            comando = 'wget https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice + 1) + '.jpg'
-            os.system(comando)
+        indice = 1
+        print("Descargando imagenes para el ID #" + format(lista_aux[x][0]) + " (" + format(lista_aux[x][2]) + " imagenes)")
+        while indice <= lista_aux[x][2]:
+            #wget -b https://cdn.nhentai.xxx/g/1835710/{1..463}.jpg
+            #wget -NS https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | grep "HTTP/" | awk '{print $2}'
+            #wget --server-response https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | awk '/^  HTTP/{print $2}'
+
+            valor = "%s" %indice
+            print("Descargando " + valor + "/" + format(lista_aux[x][2]) + " imagenes \r")
+            sys.stdout.flush()
+            time.sleep(1)
+            print("\r")
+#            comando = 'wget -b https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice) + '.jpg'
+#            os.system(comando)
             indice += 1
         os.chdir('../../')
 
