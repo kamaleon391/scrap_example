@@ -2,6 +2,7 @@ import os, sys, glob
 from bs4 import BeautifulSoup
 from operator import itemgetter
 import requests, re
+import progressbar
 import time
 
 info = ""
@@ -302,16 +303,19 @@ def imprimeArchivo():
                     print("Ya existe el Archivo LEEME para el ID " + doujinshi_id[1:])
                     os.chdir('../../')
                 else:
+                    print(" Escribiendo archivo para el ID #" + doujinshi_id[1:])
                     with open('LEEME.txt', 'w', encoding="utf-8") as f:
                         f.write(info)
                     os.chdir('../../')
             else:
+                print(" Escribiendo archivo para el ID #" + doujinshi_id[1:])
                 with open('LEEME.txt', 'w', encoding="utf-8") as f:
                     f.write(info)
                 os.chdir('../../')
         else:
             os.mkdir(doujinshi_id[1:])
             os.chdir(doujinshi_id[1:] + '/')
+            print(" Escribiendo archivo para el ID #" + doujinshi_id[1:])
             with open('LEEME.txt', 'w', encoding="utf-8") as f:
                 f.write(info)
             os.chdir('../../')
@@ -320,31 +324,43 @@ def imprimeArchivo():
         os.chdir('nhentai_xxx/')
         os.mkdir(doujinshi_id[1:])
         os.chdir(doujinshi_id[1:] + '/')
+        print(" Escribiendo archivo para el ID #" + doujinshi_id[1:])
         with open('LEEME.txt', 'w', encoding="utf-8") as f:
             f.write(info)
         os.chdir('../../')
         
 def descargaImagenes(lista_doujin):
     lista_aux = sorted(lista_doujin,key=itemgetter(2))
+    #for x in range(0,len(lista_aux)):
     for x in range(0,1):
         os.chdir('nhentai_xxx/')
         os.chdir(lista_aux[x][0])
         
-        indice = 1
-        print("Descargando imagenes para el ID #" + format(lista_aux[x][0]) + " (" + format(lista_aux[x][2]) + " imagenes)")
-        while indice <= lista_aux[x][2]:
+        print(" Descargando imagenes para el ID #" + format(lista_aux[x][0]) + " (" + format(lista_aux[x][2]) + " imagenes)")
+        widgets = [' [',
+                 progressbar.Timer(format= 'Tiempo transcurrido: %(elapsed)s'),
+                 '] ',
+                   progressbar.Bar('#'),' (',
+                   progressbar.ETA(), ') ',
+                  ]
+          
+        bar = progressbar.ProgressBar(max_value=lista_aux[x][2], 
+                                      widgets=widgets).start()
+                                      
+        #while indice <= lista_aux[x][2]:
             #wget -b https://cdn.nhentai.xxx/g/1835710/{1..463}.jpg
             #wget -NS https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | grep "HTTP/" | awk '{print $2}'
             #wget --server-response https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | awk '/^  HTTP/{print $2}'
 
-            valor = "%s" %indice
-            print("Descargando " + valor + "/" + format(lista_aux[x][2]) + " imagenes \r")
-            sys.stdout.flush()
-            time.sleep(1)
-            print("\r")
-#            comando = 'wget -b https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice) + '.jpg'
-#            os.system(comando)
+        # Opcion individual
+        indice = 1
+        for i in range(lista_aux[x][2]):
+            time.sleep(0.1)
+            bar.update(i)
+            comando = 'wget -a log_file https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice) + '.jpg'
+            os.system(comando)            
             indice += 1
+ 
         os.chdir('../../')
 
 def compruebaImagenes():
@@ -383,7 +399,7 @@ def principal():
         inicializaListas()
         list_aux = list()
         obtenerAtributos()
-        imprimeArchivo()
+        #imprimeArchivo()
         list_aux.append(doujinshi_id[1:])
         list_aux.append(gallery_id[4])
         list_aux.append(no_pag)
