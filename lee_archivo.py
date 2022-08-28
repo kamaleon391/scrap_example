@@ -346,11 +346,6 @@ def descargaImagenes(lista_doujin):
           
         bar = progressbar.ProgressBar(max_value=lista_aux[x][2], 
                                       widgets=widgets).start()
-                                      
-        #while indice <= lista_aux[x][2]:
-            #wget -b https://cdn.nhentai.xxx/g/1835710/{1..463}.jpg
-            #wget -NS https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | grep "HTTP/" | awk '{print $2}'
-            #wget --server-response https://cdn.nhentai.xxx/g/1835710/1.jpg 2>&1 | awk '/^  HTTP/{print $2}'
 
         # Opcion individual
         indice = 1
@@ -399,7 +394,7 @@ def principal():
         inicializaListas()
         list_aux = list()
         obtenerAtributos()
-        #imprimeArchivo()
+        imprimeArchivo()
         list_aux.append(doujinshi_id[1:])
         list_aux.append(gallery_id[4])
         list_aux.append(no_pag)
