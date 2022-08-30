@@ -331,8 +331,7 @@ def imprimeArchivo():
         
 def descargaImagenes(lista_doujin):
     lista_aux = sorted(lista_doujin,key=itemgetter(2))
-    #for x in range(0,len(lista_aux)):
-    for x in range(0,1):
+    for x in range(0,len(lista_aux)):
         os.chdir('nhentai_xxx/')
         os.chdir(lista_aux[x][0])
         
@@ -347,13 +346,13 @@ def descargaImagenes(lista_doujin):
         bar = progressbar.ProgressBar(max_value=lista_aux[x][2], 
                                       widgets=widgets).start()
 
-        # Opcion individual
+        # Descargamos las imagenes una por una
         indice = 1
         for i in range(lista_aux[x][2]):
             time.sleep(0.1)
             bar.update(i)
-            comando = 'wget -a log_file https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice) + '.jpg'
-            os.system(comando)            
+            comando = 'wget --append-output=log_file https://cdn.nhentai.xxx/g/' + format(lista_aux[x][1]) + "/" + format(indice) + '.jpg'
+            os.system(comando)
             indice += 1
  
         os.chdir('../../')
